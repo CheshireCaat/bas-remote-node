@@ -1,0 +1,46 @@
+{
+    "name": "bas-remote-node",
+    "version": "1.0.0",
+    "description": "NodeJS library, which allows you to use projects created in BAS in your NodeJS applications, work with ready-made functions and perform other actions.",
+    "author": "CheshireCaat",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "license": "MIT",
+    "dependencies": {
+        "request": "^2.88.0",
+        "request-promise-native": "^1.0.8",
+        "unzipper": "^0.10.8",
+        "websocket": "^1.0.31",
+        "websocket-as-promised": "^1.0.1"
+    },
+    "devDependencies": {},
+    "directories": {},
+    "keywords": [
+        "visual-programming-language",
+        "browserautomationstudio",
+        "bas-remote-control",
+        "bas-remote-client",
+        "bot-framework",
+        "bas-remote",
+        "bas-client",
+        "automation",
+        "chromium",
+        "imacros",
+        "windows",
+        "desktop",
+        "browser",
+        "grabber",
+        "poster",
+        "macros",
+        "bas",
+        "ide",
+        "cef",
+        "bot"
+    ],
+    "main": "index.js",
+    "scripts": {
+        "test": ""
+    }
+}
