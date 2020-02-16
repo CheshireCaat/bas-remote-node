@@ -1,7 +1,7 @@
 {
     "name": "bas-remote-node",
     "version": "1.0.0",
-    "description": "NodeJS library, which allows you to use projects created in BAS in your NodeJS applications, work with ready-made functions and perform other actions.",
+    "description": "NodeJS library, which allows you to automate Google Chrome browser.",
     "author": "CheshireCaat",
     "repository": {
         "type": "git",

@@ -1,4 +1,4 @@
-const Client = require('./lib/client');
+const Client = require('../lib/client');
 
 const client = new Client({
     workingDir: 'C:\\Lenovo\\BAS Remote',
