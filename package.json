@@ -5,8 +5,9 @@
     "author": "CheshireCaat",
     "repository": {
         "type": "git",
-        "url": ""
+        "url": "https://github.com/CheshireCaat/bas-remote-node.git"
     },
+    "homepage": "https://github.com/CheshireCaat/bas-remote-node",
     "license": "MIT",
     "dependencies": {
         "request": "^2.88.0",
