@@ -13,15 +13,30 @@ describe('When functions are launched from thread', () => {
         await client.close();
     });
 
+    it('Thread should throw error if function is not exist', async () => {
+        const thread = client.createThread();
+        
+        try {
+            await thread.runFunction('NotExistingFunction', {
+                'X': 5,
+                'Y': 4
+            });
+        } catch (error) {
+            const errorMessage = 'ReferenceError: Can\'t find variable: NotExistingFunction during execution of action ';
+            expect(error.message).to.be.equal(errorMessage);
+            expect(error).to.be.an('Error');
+        }
+    })
+
     it('Thread should run one function', async () => {
         const thread = client.createThread();
         const result = await thread.runFunction('Add', {
-            'X': 0,
-            'Y': 0
+            'X': 5,
+            'Y': 4
         });
     
         expect(result).to.be.a('number');
-        expect(result).to.equal(0);
+        expect(result).to.equal(9);
     });
 });
 
