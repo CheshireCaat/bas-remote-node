@@ -4,20 +4,32 @@
     "description": "NodeJS library, which allows you to automate Google Chrome browser.",
     "author": "CheshireCaat",
     "repository": {
-        "type": "git",
-        "url": "https://github.com/CheshireCaat/bas-remote-node.git"
+        "url": "https://github.com/CheshireCaat/bas-remote-node.git",
+        "type": "git"
+    },
+    "bugs": {
+        "url": "https://github.com/CheshireCaat/bas-remote-node/issues",
+        "email": "cheshirecat902@gmail.com"
     },
     "homepage": "https://github.com/CheshireCaat/bas-remote-node",
     "license": "MIT",
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "eslint": "^6.8.0",
+        "eslint-plugin-chai-friendly": "^0.5.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "mocha": "^7.0.1"
+    },
     "dependencies": {
+        "chnl": "^1.1.0",
         "request": "^2.88.0",
         "request-promise-native": "^1.0.8",
         "unzipper": "^0.10.8",
         "websocket": "^1.0.31",
         "websocket-as-promised": "^1.0.1"
     },
-    "devDependencies": {},
-    "directories": {},
     "keywords": [
         "visual-programming-language",
         "browserautomationstudio",
@@ -41,7 +53,10 @@
         "bot"
     ],
     "main": "index.js",
+    "directories": {
+        "example": "examples"
+    },
     "scripts": {
-        "test": ""
+        "test": "mocha --exit --timeout 1000000"
     }
 }

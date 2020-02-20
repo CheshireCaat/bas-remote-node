@@ -31,3 +31,9 @@ npm-debug.log
 
 # OSX hidden files
 .DS_Store
+
+# Exclude machine-specific vs code settings
+.vscode/settings.json
+
+# Exclude working folder
+data/
