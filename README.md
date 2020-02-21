@@ -3,8 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/bas-remote-node.svg)](https://badge.fury.io/js/bas-remote-node)
 
-**bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**. In order to make it possible, BrowserAutomationStudio application is used. **bas-remote-node** allows you to call and control execution of functions created in BAS. Consider following example, you have a BAS function, which executes specified Google search query and returns result as a list of urls. Using this library, you can call that function in any NodeJS application and obtain result. You can distribute applications written with **bas-remote-node** library as well.
+**bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**. 
 
+In order to make it possible, BrowserAutomationStudio application is used. **bas-remote-node** allows you to call and control execution of functions created in BAS. Consider following example, you have a BAS function, which executes specified Google search query and returns result as a list of urls. Using this library, you can call that function in any NodeJS application and obtain result. You can distribute applications written with **bas-remote-node** library as well.
 
 # BrowserAutomationStudio
 
@@ -20,7 +21,7 @@ Check following link for more info:
 # Installation
 
 ```
-> npm install --save bas-remote-node
+npm install --save bas-remote-node
 ```
 
 # Quick start
@@ -62,7 +63,6 @@ await scriptClient.close();
 
 Checkout [wiki](https://github.com/CheshireCaat/bas-remote-node/wiki) for more examples.
 
-
 # Running custom code
 
 Previous example used _TestRemoteControl_ project and _GoogleSearch_ function defined in it. In most cases you want to use your own projects and functions. In order to do it:
@@ -83,12 +83,11 @@ Following diagram will explain project architecture:
 
 **Running custom code** section explains how to prepare your project and upload it into the cloud. Portable BAS instance is downloaded and started automatically, it is also closed automatically when ```BasRemoteClient``` gets closed. Folder, where portable BAS instance is located by default is _data_ folder relative to executable. It can be customized by using ```options.workingDir``` setting.
 
-
 # Project example
 
 You can use _TestRemoteControl_ project in order to test **bas-remote-node** library. It is already uploaded into the cloud and can be used without authentication. List of available functions:
 
-* ```Add(X,Y)``` - adds to numbers return their sum.
+* ```Add(X,Y)``` - adds two numbers and return their sum.
 * ```SetProxy(Proxy,IsSocks5)``` - sets proxy for current thread. _Proxy_ param is proxy string, _IsSocks5_ is string("true", "false") value indicates if proxy type is socks5. No return value.
 * ```CheckIp()``` - returns remote IP of current thread. Uses ip.bablosoft.com service to test. Can be combined with _SetProxy_ function.
 * ```GoogleSearch(Query)``` - performs Google query, returns result as a list of urls.

@@ -23,10 +23,10 @@ module.exports = {
     'node'
   ],
   rules: {
+    'quotes': ['error', 'single', {'avoidEscape': true}],
     'linebreak-style': ['error', 'windows'],
     'promise/catch-or-return': 'off',
     'promise/always-return': 'off',
-    'quotes': ['error', 'single'],
     'indent': ['error', 4]
   },
 };
