@@ -1,3 +1,4 @@
+const { assertResult } = require('./utils');
 // eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai');
 const BasClient = require('../lib');
@@ -26,13 +27,42 @@ describe('When functions are launched from client', () => {
         }
     });
 
+    it('Client should run functions in parallel', async () => {
+        const promise1 = client.runFunction('Add', {
+            'X': 4,
+            'Y': 5
+        });
+
+        const promise2 = client.runFunction('Add', {
+            'X': 6,
+            'Y': 7
+        });
+
+        const result = await Promise.all([promise1, promise2]);
+        assertResult(result[0], 9);
+        assertResult(result[1], 13);
+    });
+
+    it('Client should run multiple functions', async () => {
+        const result1 = await client.runFunction('Add', {
+            'X': 4,
+            'Y': 5
+        });
+        assertResult(result1, 9);
+
+        const result2 = await client.runFunction('Add', {
+            'X': 6,
+            'Y': 7
+        });
+        assertResult(result2, 13);
+    });
+
     it('Client should run one function', async () => {
         const result = await client.runFunction('Add', {
             'X': 5,
             'Y': 4
         });
-        expect(result).to.be.a('number');
-        expect(result).to.equal(9);
+        assertResult(result, 9);
     });
 });
 

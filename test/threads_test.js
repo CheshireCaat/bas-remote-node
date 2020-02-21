@@ -1,3 +1,4 @@
+const { assertThread, assertResult } = require('./utils');
 // eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai');
 const BasClient = require('../lib');
@@ -26,17 +27,59 @@ describe('When functions are launched from thread', () => {
             expect(error.message).to.be.equal(errorMessage);
             expect(error).to.be.an('Error');
         }
+
+        assertThread(thread);
     })
+
+    it('Thread should run functions in parallel', async () => {
+        const threads = [ client.createThread(), client.createThread() ];
+
+        const promise1 = threads[0].runFunction('Add', {
+            'X': 4,
+            'Y': 5
+        });
+
+        const promise2 = threads[1].runFunction('Add', {
+            'X': 6,
+            'Y': 7
+        });
+
+        const result = await Promise.all([promise1, promise2]);
+        assertResult(result[0], 9);
+        assertResult(result[1], 13);
+
+        assertThread(threads[0]);
+        assertThread(threads[1]);
+    });
+
+    it('Thread should run multiple functions', async () => {
+        const thread = client.createThread();
+
+        const result1 = await client.runFunction('Add', {
+            'X': 4,
+            'Y': 5
+        });
+        assertResult(result1, 9);
+
+        const result2 = await client.runFunction('Add', {
+            'X': 6,
+            'Y': 7
+        });
+        assertResult(result2, 13);
+
+        assertThread(thread);
+    });
 
     it('Thread should run one function', async () => {
         const thread = client.createThread();
+
         const result = await thread.runFunction('Add', {
             'X': 5,
             'Y': 4
         });
+        assertResult(result, 9);
     
-        expect(result).to.be.a('number');
-        expect(result).to.equal(9);
+        assertThread(thread);
     });
 });
 
