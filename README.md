@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**. In order to make it possible, BrowserAutomationStudio application is used. bas-remote-node allows you to call and control execution of functions created in BAS. Consider following example, you have a BAS function, which executes specified Google search query and returns result as a list of urls. Using this library, you can call that function in any NodeJS application and obtain result. You can distribute applications written with bas-remote-node library as well.
+**bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**. In order to make it possible, BrowserAutomationStudio application is used. **bas-remote-node** allows you to call and control execution of functions created in BAS. Consider following example, you have a BAS function, which executes specified Google search query and returns result as a list of urls. Using this library, you can call that function in any NodeJS application and obtain result. You can distribute applications written with **bas-remote-node** library as well.
 
 
 # BrowserAutomationStudio
@@ -80,12 +80,12 @@ Following diagram will explain project architecture:
 
 ![](https://i.imgur.com/9lfF3EJ.png)
 
-**Running custom code** section explains how to prepare your project and upload it into the cloud. Portable BAS instance is downloaded and started automatically, it is also closed automatically when BasRemoteClient gets closed. Folder, where portable BAS instance is located by default is _data_ folder relative to executable. It can be customized by using ```options.workingDir``` setting.
+**Running custom code** section explains how to prepare your project and upload it into the cloud. Portable BAS instance is downloaded and started automatically, it is also closed automatically when ```BasRemoteClient``` gets closed. Folder, where portable BAS instance is located by default is _data_ folder relative to executable. It can be customized by using ```options.workingDir``` setting.
 
 
 # Project example
 
-You can use _TestRemoteControl_ project in order to test bas-remote-node library. It is already uploaded into the cloud and can be used without authentication. List of available functions:
+You can use _TestRemoteControl_ project in order to test **bas-remote-node** library. It is already uploaded into the cloud and can be used without authentication. List of available functions:
 
 * ```Add(X,Y)``` - adds to numbers return their sum.
 * ```SetProxy(Proxy,IsSocks5)``` - sets proxy for current thread. _Proxy_ param is proxy string, _IsSocks5_ is string("true", "false") value indicates if proxy type is socks5. No return value.
@@ -97,9 +97,9 @@ Project source code can be downloaded [here](https://drive.google.com/uc?id=1WQY
 
 # License
 
-bas-remote-node has MIT license.
+**bas-remote-node** has MIT license.
 
-You can distribute applications using bas-remote-node library, including commercial, to user, who don't have BAS premium subscription without any fees.
+You can distribute applications using **bas-remote-node** library, including commercial, to user, who don't have BAS premium subscription without any fees.
 
 In order to create project with custom functions you need to have a BAS premium subscription.
 
