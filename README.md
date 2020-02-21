@@ -50,14 +50,14 @@ const scriptParams = {
 //Following function will return list of strings
 const result = await scriptClient.runFunction(
     'GoogleSearch', /* or 'YourFunctionName' */
-    ScriptParams);
+    scriptParams);
 
 //Iterate and output results
 result.forEach(link => {
     console.log(link);
 });
 
-await client.close();
+await scriptClient.close();
 ```
 
 Checkout [wiki](https://github.com/CheshireCaat/bas-remote-node/wiki) for more examples.
