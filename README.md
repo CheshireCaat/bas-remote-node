@@ -1,6 +1,7 @@
 # bas-remote-node
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/bas-remote-node.svg)](https://badge.fury.io/js/bas-remote-node)
 
 **bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**. In order to make it possible, BrowserAutomationStudio application is used. **bas-remote-node** allows you to call and control execution of functions created in BAS. Consider following example, you have a BAS function, which executes specified Google search query and returns result as a list of urls. Using this library, you can call that function in any NodeJS application and obtain result. You can distribute applications written with **bas-remote-node** library as well.
 
