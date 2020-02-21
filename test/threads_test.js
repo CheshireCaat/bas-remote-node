@@ -3,7 +3,7 @@ const { assertThread, assertResult } = require('./utils');
 const { expect } = require('chai');
 const BasClient = require('../lib');
 
-const client = new BasClient({scriptName: 'TestRemoteControl'});
+const client = new BasClient({scriptName: 'TestRemoteControl', workingDir: '..\\bas-remote-app'});
 
 describe('When functions are launched from thread', () => {
     before(async () => {
