@@ -9,6 +9,7 @@ module.exports = {
     'plugin:chai-friendly/recommended',
     'plugin:promise/recommended',
     'plugin:node/recommended',
+    'airbnb-base'
   ],
   globals: {
     Atomics: 'readonly',
@@ -23,10 +24,15 @@ module.exports = {
     'node'
   ],
   rules: {
+    'object-curly-newline': ['error', { 'multiline': true }],
     'quotes': ['error', 'single', {'avoidEscape': true}],
+    'comma-dangle': ['error', 'only-multiline'],
     'linebreak-style': ['error', 'windows'],
+    'function-paren-newline': 'off',
     'promise/catch-or-return': 'off',
     'promise/always-return': 'off',
+    'no-underscore-dangle': 'off',
+    'prefer-object-spread': 'off',
     'indent': ['error', 4]
   },
 };
