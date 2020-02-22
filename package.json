@@ -25,10 +25,10 @@
     },
     "dependencies": {
         "chnl": "^1.1.0",
+        "extract-zip": "^1.6.7",
         "proper-lockfile": "^4.1.1",
         "request": "^2.88.0",
         "request-promise-native": "^1.0.8",
-        "unzipper": "^0.10.8",
         "websocket": "^1.0.31",
         "websocket-as-promised": "^1.0.1"
     },
@@ -59,7 +59,7 @@
         "test": "test"
     },
     "scripts": {
-        "test": "mocha --exit --timeout 1000000"
+        "test": "mocha --exit --inline-diffs --timeout 1000000"
     },
     "main": "lib/index.js"
 }

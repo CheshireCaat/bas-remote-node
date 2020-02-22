@@ -24,8 +24,9 @@ module.exports = {
     'node'
   ],
   rules: {
-    'object-curly-newline': ['error', { 'multiline': true }],
-    'quotes': ['error', 'single', {'avoidEscape': true}],
+    'consistent-return': ['error', { treatUndefinedAsUnspecified: true }],
+    'object-curly-newline': ['error', { multiline: true }],
+    'quotes': ['error', 'single', { avoidEscape: true }],
     'comma-dangle': ['error', 'only-multiline'],
     'linebreak-style': ['error', 'windows'],
     'function-paren-newline': 'off',
@@ -33,6 +34,8 @@ module.exports = {
     'promise/always-return': 'off',
     'no-underscore-dangle': 'off',
     'prefer-object-spread': 'off',
-    'indent': ['error', 4]
+    'no-use-before-define': 'off',
+    'indent': ['error', 4],
+    'no-console': 'off',
   },
 };
