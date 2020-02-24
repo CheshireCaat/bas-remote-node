@@ -27,6 +27,18 @@ describe('When functions are launched from client', () => {
         }
     });
 
+    it('Client should stop function execution', async () => {
+        const promise = client.runFunction('GoogleSearch', { Query: 'cats' })
+            .catch((error) => {
+                const errorMessage = 'Task stopped manually';
+                expect(error.message).to.be.equal(errorMessage);
+                expect(error).to.be.an('Error');
+            });
+
+        promise.stop();
+        await promise;
+    });
+
     it('Client should run functions in parallel', async () => {
         const promise1 = client.runFunction('Add', {
             X: 4,

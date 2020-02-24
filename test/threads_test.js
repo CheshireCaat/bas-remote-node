@@ -31,6 +31,20 @@ describe('When functions are launched from thread', () => {
         assertThread(thread);
     });
 
+    it('Thread should stop function execution', async () => {
+        const thread = client.createThread();
+
+        const promise = thread.runFunction('GoogleSearch', { Query: 'cats' })
+            .catch((error) => {
+                const errorMessage = 'Task stopped manually';
+                expect(error.message).to.be.equal(errorMessage);
+                expect(error).to.be.an('Error');
+            });
+
+        thread.stop();
+        await promise;
+    });
+
     it('Thread should run functions in parallel', async () => {
         const threads = [client.createThread(), client.createThread()];
 
