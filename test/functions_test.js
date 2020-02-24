@@ -21,7 +21,7 @@ describe('When functions are launched from client', () => {
                 Y: 4,
             });
         } catch (error) {
-            const errorMessage = 'ReferenceError: Can\'t find variable: NotExistingFunction during execution of action ';
+            const errorMessage = "ReferenceError: Can't find variable: NotExistingFunction during execution of action ";
             expect(error.message).to.be.equal(errorMessage);
             expect(error).to.be.an('Error');
         }
