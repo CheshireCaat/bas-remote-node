@@ -31,34 +31,38 @@ Following code will search for _cats_ query in Google and output result into con
 ```js
 const BasRemoteClient = require('bas-remote-node');
 
-//Set script name, and optionally auth details (login, password) 
-const options = {
-    scriptName: 'TestRemoteControl' /* or 'YourScriptName' */
-};
+async function main() {
+    //Set script name, and optionally auth details (login, password) 
+    const options = {
+        scriptName: 'TestRemoteControl' /* or 'YourScriptName' */
+    };
 
-//Create client
-const scriptClient = new BasRemoteClient(options);
+    //Create client
+    const scriptClient = new BasRemoteClient(options);
 
-//Start application, this may take some time
-await scriptClient.start();
+    //Start application, this may take some time
+    await scriptClient.start();
 
-//Set parameters for function
-const scriptParams = {
-    Query: 'cats'
-};
+    //Set parameters for function
+    const scriptParams = {
+        Query: 'cats'
+    };
 
-//Run function and wait for result
-//Following function will return list of strings
-const result = await scriptClient.runFunction(
-    'GoogleSearch', /* or 'YourFunctionName' */
-    scriptParams);
+    //Run function and wait for result
+    //Following function will return list of strings
+    const result = await scriptClient.runFunction(
+        'GoogleSearch', /* or 'YourFunctionName' */
+        scriptParams);
 
-//Iterate and output results
-result.forEach(link => {
-    console.log(link);
-});
+    //Iterate and output results
+    result.forEach(link => {
+        console.log(link);
+    });
 
-await scriptClient.close();
+    await scriptClient.close();
+}
+
+main();
 ```
 
 Checkout [wiki](https://github.com/CheshireCaat/bas-remote-node/wiki) for more examples.
