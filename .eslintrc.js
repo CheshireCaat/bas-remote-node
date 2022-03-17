@@ -30,8 +30,6 @@ module.exports = {
     'comma-dangle': ['error', 'only-multiline'],
     'linebreak-style': ['error', 'windows'],
     'function-paren-newline': 'off',
-    'promise/catch-or-return': 'off',
-    'promise/always-return': 'off',
     'no-underscore-dangle': 'off',
     'prefer-object-spread': 'off',
     'no-use-before-define': 'off',

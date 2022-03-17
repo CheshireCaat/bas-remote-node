@@ -15,12 +15,12 @@
     "license": "MIT",
     "devDependencies": {
         "chai": "^4.3.4",
-        "eslint": "^7.31.0",
-        "eslint-config-airbnb-base": "^14.0.0",
-        "eslint-plugin-chai-friendly": "^0.7.1",
-        "eslint-plugin-import": "^2.23.4",
+        "eslint": "^7.32.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-chai-friendly": "^0.7.2",
+        "eslint-plugin-import": "^2.25.3",
         "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^5.1.0",
+        "eslint-plugin-promise": "^5.1.1",
         "mocha": "^9.0.3"
     },
     "dependencies": {
