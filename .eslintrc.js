@@ -1,9 +1,8 @@
 module.exports = {
   env: {
-    commonjs: true,
+    es2018: true,
     mocha: true,
     node: true,
-    es6: true,
   },
   extends: [
     'plugin:chai-friendly/recommended',
@@ -11,13 +10,6 @@ module.exports = {
     'plugin:node/recommended',
     'airbnb-base'
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
-  parserOptions: {
-    ecmaVersion: 2018,
-  },
   plugins: [
     'chai-friendly',
     'promise',
