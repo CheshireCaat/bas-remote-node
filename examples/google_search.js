@@ -3,15 +3,15 @@ const BasRemoteClient = require('../lib');
 const client = new BasRemoteClient({ scriptName: 'TestRemoteControl' });
 
 async function main() {
-    await client.start();
+  await client.start();
 
-    const result = await client.runFunction('GoogleSearch', { Query: 'cats' });
+  const result = await client.runFunction('GoogleSearch', { Query: 'cats' });
 
-    result.forEach((link) => {
-        console.log(link);
-    });
+  result.forEach((link) => {
+    console.log(link);
+  });
 
-    await client.close();
+  await client.close();
 }
 
 main();
