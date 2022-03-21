@@ -28,6 +28,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'prefer-object-spread': 'off',
     'no-use-before-define': 'off',
+    'no-return-assign': 'off',
     'no-await-in-loop': 'off',
     'no-plusplus': 'off',
     'no-console': 'off',
