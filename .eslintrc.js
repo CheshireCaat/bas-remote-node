@@ -16,11 +16,12 @@ module.exports = {
     'node'
   ],
   rules: {
+    'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
     'object-curly-newline': ['error', { multiline: true }],
     'quotes': ['error', 'single', { avoidEscape: true }],
-    'quote-props': ['error', 'consistent'],
     'comma-dangle': ['error', 'only-multiline'],
     'linebreak-style': ['error', 'windows'],
+    'quote-props': ['error', 'consistent'],
     'no-promise-executor-return': 'off',
     'function-paren-newline': 'off',
     'promise/catch-or-return': 'off',
