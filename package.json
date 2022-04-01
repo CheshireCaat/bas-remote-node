@@ -1,6 +1,6 @@
 {
     "name": "bas-remote-node",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "description": "NodeJS library, which allows you to automate Google Chrome browser.",
     "author": "CheshireCaat",
     "repository": {
@@ -27,6 +27,7 @@
         "es5-ext": "0.10.53",
         "extract-zip": "^2.0.1",
         "proper-lockfile": "^4.1.2",
+        "rimraf": "^3.0.2",
         "websocket": "^1.0.34",
         "websocket-as-promised": "^2.0.1"
     },
