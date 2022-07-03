@@ -1,7 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai');
 const { assertThread, assertResult } = require('./utils');
-const BasClient = require('../lib');
+const BasClient = require('../src');
 
 const client = new BasClient({ scriptName: 'TestRemoteControl', workingDir: '..\\bas-remote-app' });
 

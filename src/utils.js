@@ -1,8 +1,8 @@
-const { createWriteStream } = require('fs');
+const fs = require('fs');
 const https = require('https');
 
-const download = (url, filePath) => new Promise((resolve) => {
-  const file = createWriteStream(filePath);
+const download = (url, path) => new Promise((resolve) => {
+  const file = fs.createWriteStream(path);
 
   https.get(url, (response) => {
     response.on('data', (chunk) => {
@@ -39,9 +39,7 @@ const inject = (promise, client, threadId) => ({
 });
 
 const throwIf = (condition, message) => {
-  if (condition) {
-    throw new Error(message);
-  }
+  if (condition) throw new Error(message);
 };
 
 const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
