@@ -1,21 +1,16 @@
-// eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai');
 const { assertResult } = require('./utils');
 const BasClient = require('../src');
 
-const client = new BasClient({ scriptName: 'TestRemoteControl', workingDir: '..\\bas-remote-app' });
+const client = new BasClient({ scriptName: 'TestRemoteControl', workingDir: '../bas-remote-app' });
 
-describe('Client (Functions)', () => {
-  before(async () => {
-    await client.start();
-  });
+describe('client (functions)', () => {
+  before(() => client.start());
 
-  after(async () => {
-    await client.close();
-  });
+  after(() => client.close());
 
   describe('#runFunction()', () => {
-    it('Should throw error if function is not exist', async () => {
+    it('should throw error if function is not exist', async () => {
       try {
         await client.runFunction('NotExistingFunction', {
           X: 5,
@@ -28,7 +23,7 @@ describe('Client (Functions)', () => {
       }
     });
 
-    it('Should stop function execution', async () => {
+    it('should stop function execution', async () => {
       const promise = client.runFunction('GoogleSearch', { Query: 'cats' })
         .catch((error) => {
           const errorMessage = 'Task stopped manually';
@@ -40,7 +35,7 @@ describe('Client (Functions)', () => {
       await promise;
     });
 
-    it('Should run functions in parallel', async () => {
+    it('should run functions in parallel', async () => {
       const promise1 = client.runFunction('Add', {
         X: 4,
         Y: 5,
@@ -56,7 +51,7 @@ describe('Client (Functions)', () => {
       assertResult(result[1], 13);
     });
 
-    it('Should run multiple functions', async () => {
+    it('should run multiple functions', async () => {
       const result1 = await client.runFunction('Add', {
         X: 4,
         Y: 5,
@@ -70,7 +65,7 @@ describe('Client (Functions)', () => {
       assertResult(result2, 13);
     });
 
-    it('Should run one function', async () => {
+    it('should run one function', async () => {
       const result = await client.runFunction('Add', {
         X: 5,
         Y: 4,
