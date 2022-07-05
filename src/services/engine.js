@@ -29,7 +29,7 @@ module.exports = class EngineService {
    * @returns {Promise}
    */
   async start(port) {
-    const arch = process.arch.slice(1, 3);
+    const arch = process.arch.includes('32') ? '32' : '64';
 
     const zipName = `FastExecuteScriptProtected.x${arch}`;
     const urlName = `FastExecuteScriptProtected${arch}`;
