@@ -1,5 +1,5 @@
 const { assertEmptyObject, assertObject, assertError } = require('./utils');
-const BasClient = require('../src');
+const BasClient = require('..');
 
 const options = { scriptName: 'TestRemoteControl', workingDir: '../bas-remote-app' };
 const errorMessage = 'Please start the client before calling this method';

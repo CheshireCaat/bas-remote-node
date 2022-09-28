@@ -133,10 +133,9 @@ module.exports = class EngineService {
    * @returns {Promise}
    */
   close() {
-    const killProcess = () => this._process.kill();
     return lock.unlock(this._getLockPath())
       .finally(() => {
-        killProcess();
+        this._process.kill();
       });
   }
 };

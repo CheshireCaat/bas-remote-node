@@ -1,4 +1,4 @@
-const BasRemoteClient = require('../src');
+const BasRemoteClient = require('..');
 
 const client = new BasRemoteClient({ scriptName: 'TestRemoteControl' });
 
