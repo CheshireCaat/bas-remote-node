@@ -15,7 +15,6 @@ module.exports = class SocketService extends EventEmitter {
     super();
 
     this.options = options;
-    this._attempts = 0;
     this._buffer = '';
   }
 
@@ -27,7 +26,6 @@ module.exports = class SocketService extends EventEmitter {
    */
   async start(port) {
     this._ws = new WebSocketAsPromised(`ws://127.0.0.1:${port}`, { createWebSocket: (url) => new WebSocket(url) });
-    this._attempts = 0;
     this._buffer = '';
 
     this._ws.onMessage.addListener((data) => {
@@ -45,16 +43,17 @@ module.exports = class SocketService extends EventEmitter {
   }
 
   async _connect() {
+    let attempts = 0;
     const promise = new Promise((resolve, reject) => {
       this._ws.onClose.addListener(async () => {
-        if (this._attempts === 60) {
+        if (attempts === 60) {
           reject(new Error('Cannot connect to the WebSocket server'));
         }
 
         this.emit('close');
 
         setTimeout(() => {
-          this._attempts += 1;
+          attempts += 1;
           this._open();
         }, 1000);
       });
@@ -70,11 +69,11 @@ module.exports = class SocketService extends EventEmitter {
   }
 
   async _open() {
-    return new Promise((resolve) => {
-      this._ws.open()
-        .then(resolve)
-        .catch(resolve);
-    });
+    try {
+      await this._ws.open();
+    } catch (error) {
+      // ignore
+    }
   }
 
   /**

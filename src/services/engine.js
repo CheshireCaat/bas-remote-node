@@ -1,6 +1,7 @@
 const { execFile } = require('child_process');
 const { join, basename } = require('path');
 const lock = require('proper-lockfile');
+const EventEmitter = require('events');
 const extract = require('extract-zip');
 const rimraf = require('rimraf');
 const fs = require('fs');
@@ -8,7 +9,7 @@ const { request, download } = require('../utils');
 
 const URL = 'https://bablosoft.com';
 
-module.exports = class EngineService {
+module.exports = class EngineService extends EventEmitter {
   /**
    * Create an instance of EngineService class.
    *
@@ -16,6 +17,7 @@ module.exports = class EngineService {
    * @param {Object} options - remote control options object.
    */
   constructor(options) {
+    super();
     this.options = options;
 
     this._scriptDir = join(options.workingDir, 'run', options.scriptName);
@@ -36,11 +38,13 @@ module.exports = class EngineService {
     const zipFile = join(this.zipDir, `${zipName}.zip`);
 
     if (!fs.existsSync(this.zipDir)) {
+      this.emit('beforeDownload');
       fs.mkdirSync(this.zipDir, { recursive: true });
       await this._downloadExecutable(zipFile, zipName, urlName);
     }
 
     if (!fs.existsSync(this.exeDir)) {
+      this.emit('beforeExtract');
       fs.mkdirSync(this.exeDir, { recursive: true });
       await this._extractExecutable(zipFile);
     }
@@ -108,15 +112,15 @@ module.exports = class EngineService {
       if (dirent.isDirectory()) {
         const path = join(this._scriptDir, dirent.name);
 
-        if (!lock.checkSync(this._getLockPath(path))) {
+        if (!lock.checkSync(join(path, '.lock'))) {
           rimraf.sync(path);
         }
       }
     });
   }
 
-  _getLockPath(path) {
-    return join(path || this.exeDir, '.lock');
+  _getLockPath() {
+    return join(this.exeDir, '.lock');
   }
 
   _lock() {
