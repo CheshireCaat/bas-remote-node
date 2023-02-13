@@ -25,7 +25,12 @@ module.exports = class SocketService extends EventEmitter {
    * @returns {Promise}
    */
   async start(port) {
-    this._ws = new WebSocketAsPromised(`ws://127.0.0.1:${port}`, { createWebSocket: (url) => new WebSocket(url) });
+    this._ws = new WebSocketAsPromised(`ws://127.0.0.1:${port}`, {
+      createWebSocket: (url) => new WebSocket(url, null, null, null, null, {
+        maxReceivedMessageSize: Infinity,
+        maxReceivedFrameSize: Infinity,
+      })
+    });
     this._buffer = '';
 
     this._ws.onMessage.addListener((data) => {
