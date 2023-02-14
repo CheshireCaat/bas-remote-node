@@ -42,6 +42,8 @@ const throwIf = (condition, message) => {
   if (condition) throw new Error(message);
 };
 
+const once = (emitter, event, cb) => emitter.once(event, cb).off.bind(emitter, event, cb);
+
 const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
 
-module.exports = { download, request, throwIf, inject, random };
+module.exports = { download, request, throwIf, inject, random, once };

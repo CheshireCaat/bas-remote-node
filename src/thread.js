@@ -1,4 +1,4 @@
-const { random } = require('./utils');
+const { once, random } = require('./utils');
 
 module.exports = class BasThread {
   /**
@@ -43,7 +43,6 @@ module.exports = class BasThread {
    *              console.log(link);
    *          });
    *      });
-   * @returns {Promise}
    */
   runFunction(functionName, functionParams = {}) {
     if (this._threadId && this._isRunning) {
@@ -64,12 +63,16 @@ module.exports = class BasThread {
         const response = JSON.parse(result);
         this._isRunning = false;
 
-        if (!response.Success) {
-          reject(new Error(response.Message));
-        } else {
+        if (response.Success) {
           resolve(response.Result);
+        } else {
+          reject(new Error(response.Message));
         }
-      });
+      }).finally(
+        once(this._client, 'close', () => reject(new Error(
+          'The client connection has been closed.'
+        )))
+      );
     });
 
     this._isRunning = true;

@@ -72,5 +72,15 @@ describe('client (functions)', () => {
       });
       assertResult(result, 9);
     });
+
+    it('should throw error if the client connection is lost', async () => {
+      setTimeout(() => client._socket._ws.close(), 5000);
+      try {
+        await client.runFunction('GoogleSearch', { Query: 'cats' });
+      } catch (err) {
+        expect(err.message).to.be.equal('The client connection has been closed.');
+        expect(err).to.be.an('Error');
+      }
+    });
   });
 });

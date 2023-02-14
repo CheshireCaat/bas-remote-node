@@ -1,7 +1,7 @@
 const path = require('path');
 const { cwd } = require('process');
 
-const { inject, random, throwIf } = require('./utils');
+const { once, inject, random, throwIf } = require('./utils');
 const SocketService = require('./services/socket');
 const EngineService = require('./services/engine');
 const BasThread = require('./thread');
@@ -168,7 +168,6 @@ module.exports = class BasRemoteClient {
    * });
    *
    * links.forEach((link) => console.log(link));
-   * @returns {Promise}
    */
   runFunction(functionName, functionParams = {}) {
     if (!this._isStarted) {
@@ -186,14 +185,18 @@ module.exports = class BasRemoteClient {
       }).then((result) => {
         const response = JSON.parse(result);
 
-        if (!response.Success) {
-          reject(new Error(response.Message));
-        } else {
+        if (response.Success) {
           resolve(response.Result);
+        } else {
+          reject(new Error(response.Message));
         }
 
         this._stopThread(threadId);
-      });
+      }).finally(
+        once(this._socket, 'close', () => reject(new Error(
+          'The client connection has been closed.'
+        )))
+      );
     });
 
     return inject(promise, this, threadId);
