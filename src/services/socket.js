@@ -29,7 +29,7 @@ module.exports = class SocketService extends EventEmitter {
       createWebSocket: (url) => new WebSocket(url, null, null, null, null, {
         maxReceivedMessageSize: Infinity,
         maxReceivedFrameSize: Infinity,
-      })
+      }),
     });
     this._buffer = '';
 

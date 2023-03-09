@@ -68,61 +68,61 @@ module.exports = class BasRemoteClient {
   }
 
   /**
-  * Add one-time event listener with selected name.
-  *
-  * Possible event names:
-  *   - `messageReceived` - invoked when WebSocket receive new message.
-  *   - `messageSent` - invoked when WebSocket send new message.
-  *
-  * Event listeners related to sending and receiving messages
-  * accept a single argument `{ async, type, data, id }`.
-  * @example
-  * client.once('messageReceived', message => {
-  *   console.log(`Message received: ${message.type}`));
-  * });
-  */
+   * Add one-time event listener with selected name.
+   *
+   * Possible event names:
+   *   - `messageReceived` - invoked when WebSocket receive new message.
+   *   - `messageSent` - invoked when WebSocket send new message.
+   *
+   * Event listeners related to sending and receiving messages
+   * accept a single argument `{ async, type, data, id }`.
+   * @example
+   * client.once('messageReceived', message => {
+   *   console.log(`Message received: ${message.type}`));
+   * });
+   */
   once(event, listener) {
     this._socket.once(event, listener);
     return this;
   }
 
   /**
-  * Add event listener with selected name.
-  *
-  * Possible event names:
-  *   - `messageReceived` - invoked when WebSocket receive new message.
-  *   - `messageSent` - invoked when WebSocket send new message.
-  *
-  * Event listeners related to sending and receiving messages
-  * accept a single argument `{ async, type, data, id }`.
-  * @example
-  * client.on('messageReceived', message => {
-  *   console.log(`Message received: ${message.type}`));
-  * });
-  */
+   * Add event listener with selected name.
+   *
+   * Possible event names:
+   *   - `messageReceived` - invoked when WebSocket receive new message.
+   *   - `messageSent` - invoked when WebSocket send new message.
+   *
+   * Event listeners related to sending and receiving messages
+   * accept a single argument `{ async, type, data, id }`.
+   * @example
+   * client.on('messageReceived', message => {
+   *   console.log(`Message received: ${message.type}`));
+   * });
+   */
   on(event, listener) {
     this._socket.on(event, listener);
     return this;
   }
 
   /**
-  * Remove event listener with selected name.
-  *
-  * Possible event names:
-  *   - `messageReceived` - invoked when WebSocket receive new message.
-  *   - `messageSent` - invoked when WebSocket send new message.
-  *
-  * Event listeners related to sending and receiving messages
-  * accept a single argument `{ async, type, data, id }`.
-  * @example
-  * const callback = message => {
-  *   console.log(message.type);
-  * });
-  *
-  * client.on('messageReceived', callback);
-  * // any actions
-  * client.off('messageReceived', callback);
-  */
+   * Remove event listener with selected name.
+   *
+   * Possible event names:
+   *   - `messageReceived` - invoked when WebSocket receive new message.
+   *   - `messageSent` - invoked when WebSocket send new message.
+   *
+   * Event listeners related to sending and receiving messages
+   * accept a single argument `{ async, type, data, id }`.
+   * @example
+   * const callback = message => {
+   *   console.log(message.type);
+   * });
+   *
+   * client.on('messageReceived', callback);
+   * // any actions
+   * client.off('messageReceived', callback);
+   */
   off(event, listener) {
     this._socket.off(event, listener);
     return this;

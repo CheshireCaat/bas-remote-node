@@ -24,12 +24,11 @@ describe('client (functions)', () => {
     });
 
     it('should stop function execution', async () => {
-      const promise = client.runFunction('GoogleSearch', { Query: 'cats' })
-        .catch((error) => {
-          const errorMessage = 'Task stopped manually';
-          expect(error.message).to.be.equal(errorMessage);
-          expect(error).to.be.an('Error');
-        });
+      const promise = client.runFunction('GoogleSearch', { Query: 'cats' }).catch((error) => {
+        const errorMessage = 'Task stopped manually';
+        expect(error.message).to.be.equal(errorMessage);
+        expect(error).to.be.an('Error');
+      });
 
       promise.stop();
       await promise;

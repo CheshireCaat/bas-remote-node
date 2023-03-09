@@ -16,7 +16,7 @@ describe('client', () => {
       try {
         await dummyClient.sendAsync('set_global_variable', {
           name: 'TEST_VARIABLE',
-          value: JSON.stringify('Hello')
+          value: JSON.stringify('Hello'),
         });
       } catch (error) {
         assertError(error, errorMessage);
@@ -26,7 +26,7 @@ describe('client', () => {
     it('should work fine when the client is running', async () => {
       const obj = await client.sendAsync('set_global_variable', {
         name: 'TEST_VARIABLE',
-        value: JSON.stringify('Hello')
+        value: JSON.stringify('Hello'),
       });
       assertEmptyObject(obj);
 
@@ -36,27 +36,26 @@ describe('client', () => {
   });
 
   describe('#send()', () => {
-    it('should throw error when the client is not running', () => {
-      client.sendAsync('set_global_variable', {
-        name: 'TEST_VARIABLE',
-        value: JSON.stringify('Hello')
-      }).catch((error) => {
+    it('should throw error when the client is not running', async () => {
+      try {
+        await client.sendAsync('set_global_variable', {
+          name: 'TEST_VARIABLE',
+          value: JSON.stringify('Hello'),
+        });
+      } catch (error) {
         assertError(error, errorMessage);
-      });
+      }
     });
 
-    it('should work fine when the client is running', () => {
-      client.sendAsync('set_global_variable', {
-        name: 'TEST_VARIABLE',
-        value: JSON.stringify('Hello')
-      }).then((obj) => {
-        assertEmptyObject(obj);
-      });
+    it('should work fine when the client is running', async () => {
+      assertEmptyObject(
+        await client.sendAsync('set_global_variable', {
+          name: 'TEST_VARIABLE',
+          value: JSON.stringify('Hello'),
+        })
+      );
 
-      client.sendAsync('get_global_variable', { name: 'TEST_VARIABLE' })
-        .then((result) => {
-          assertObject(result);
-        });
+      assertObject(await client.sendAsync('get_global_variable', { name: 'TEST_VARIABLE' }));
     });
   });
 });

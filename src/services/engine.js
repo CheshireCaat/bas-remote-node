@@ -7,8 +7,6 @@ const rimraf = require('rimraf');
 const fs = require('fs');
 const { request, download } = require('../utils');
 
-const URL = 'https://bablosoft.com';
-
 module.exports = class EngineService extends EventEmitter {
   /**
    * Create an instance of EngineService class.
@@ -31,16 +29,12 @@ module.exports = class EngineService extends EventEmitter {
    * @returns {Promise}
    */
   async start(port) {
-    const arch = process.arch.includes('32') ? '32' : '64';
-
-    const zipName = `FastExecuteScriptProtected.x${arch}`;
-    const urlName = `FastExecuteScriptProtected${arch}`;
-    const zipFile = join(this.zipDir, `${zipName}.zip`);
+    const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
 
     if (!fs.existsSync(this.zipDir)) {
       this.emit('beforeDownload');
       fs.mkdirSync(this.zipDir, { recursive: true });
-      await this._downloadExecutable(zipFile, zipName, urlName);
+      await this._downloadExecutable(zipFile);
     }
 
     if (!fs.existsSync(this.exeDir)) {
@@ -57,8 +51,8 @@ module.exports = class EngineService extends EventEmitter {
    *
    * @returns {Promise}
    */
-  initialize() {
-    return request(`${URL}/scripts/${this.options.scriptName}/properties`)
+  async initialize() {
+    await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`)
       .then((data) => {
         if (!data.success) {
           throw new Error('Script with selected name not exist');
@@ -74,6 +68,12 @@ module.exports = class EngineService extends EventEmitter {
         this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
         this.zipDir = join(this._engineDir, data.engversion);
       });
+
+    this.metadata = await request(
+      `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
+        this.zipDir
+      )}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
+    ).then((result) => ({ url: result.Url, chunks: result.Chunks, checksum: result.Checksum }));
   }
 
   /**
@@ -81,8 +81,8 @@ module.exports = class EngineService extends EventEmitter {
    * @private
    * @returns {Promise}
    */
-  _downloadExecutable(zipPath, zipName, urlName) {
-    return download(`${URL}/distr/${urlName}/${basename(this.zipDir)}/${zipName}.zip`, zipPath);
+  _downloadExecutable(zipPath) {
+    return download(this.metadata.url, zipPath);
   }
 
   /**
@@ -97,10 +97,7 @@ module.exports = class EngineService extends EventEmitter {
   _runEngineProcess(port) {
     this._process = execFile(
       join(this.exeDir, 'FastExecuteScript.exe'),
-      [
-        `--remote-control-port=${port}`,
-        '--remote-control'
-      ],
+      [`--remote-control-port=${port}`, '--remote-control'],
       { cwd: this.exeDir }
     );
 
@@ -160,3 +157,9 @@ const supported = (actual) => {
 
   return patchA >= patchB;
 };
+
+const DISTR_URL = 'https://bablosoft.com/distr';
+
+const SCRIPTS_URL = 'https://bablosoft.com/scripts';
+
+const ARCH = process.arch.includes('32') ? '32' : '64';
