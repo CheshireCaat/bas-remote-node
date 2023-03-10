@@ -1,10 +1,11 @@
 const fs = require('fs');
+const http = require('http');
 const https = require('https');
 
 const download = (url, path) => new Promise((resolve) => {
   const file = fs.createWriteStream(path);
 
-  https.get(url, (response) => {
+  get(url, (response) => {
     response.on('data', (chunk) => {
       file.write(chunk);
     });
@@ -19,7 +20,7 @@ const download = (url, path) => new Promise((resolve) => {
 const request = (url) => new Promise((resolve) => {
   let str = '';
 
-  https.get(url, (response) => {
+  get(url, (response) => {
     response.on('data', (chunk) => {
       str += chunk;
     });
@@ -43,6 +44,8 @@ const throwIf = (condition, message) => {
 };
 
 const once = (emitter, event, cb) => emitter.once(event, cb).off.bind(emitter, event, cb);
+
+const get = (url, ...args) => (url.includes('http:') ? http : https).get(url, ...args);
 
 const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
 
