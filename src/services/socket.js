@@ -1,15 +1,16 @@
 const WebSocketAsPromised = require('websocket-as-promised');
 const WebSocket = require('websocket').w3cwebsocket;
 const EventEmitter = require('events');
+const { INVALID_ENGINE_ERROR } = require('./constants');
 
 const SEPARATOR = '---Message--End---';
 
 module.exports = class SocketService extends EventEmitter {
   /**
-   * Create an instance of SocketService class.
+   * Create an instance of the `SocketService` class.
    *
+   * @param {any} options - remote control options object.
    * @constructor
-   * @param {Object} options - remote control options object.
    */
   constructor(options) {
     super();
@@ -20,9 +21,8 @@ module.exports = class SocketService extends EventEmitter {
 
   /**
    * Asynchronously start the socket service with the specified port.
-   * @param {Number} port - selected port number.
    *
-   * @returns {Promise}
+   * @param {number} port - selected port number.
    */
   async start(port) {
     this._ws = new WebSocketAsPromised(`ws://127.0.0.1:${port}`, {
@@ -50,9 +50,9 @@ module.exports = class SocketService extends EventEmitter {
   async _connect() {
     let attempts = 0;
     const promise = new Promise((resolve, reject) => {
-      this._ws.onClose.addListener(async () => {
+      this._ws.onClose.addListener((error) => {
         if (attempts === 60) {
-          reject(new Error('Cannot connect to the WebSocket server'));
+          reject(new Error(`Cannot connect to the WebSocket server (reason: ${error.reason})\n${INVALID_ENGINE_ERROR}`));
         }
 
         this.emit('close');

@@ -6,13 +6,14 @@ const extract = require('extract-zip');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const { request, download } = require('../utils');
+const { INVALID_ENGINE_ERROR } = require('./constants');
 
 module.exports = class EngineService extends EventEmitter {
   /**
-   * Create an instance of EngineService class.
+   * Create an instance of the `EngineService` class.
    *
+   * @param {any} options - remote control options object.
    * @constructor
-   * @param {Object} options - remote control options object.
    */
   constructor(options) {
     super();
@@ -24,9 +25,8 @@ module.exports = class EngineService extends EventEmitter {
 
   /**
    * Asynchronously start the engine service with the specified port.
-   * @param {Number} port - selected port number.
    *
-   * @returns {Promise}
+   * @param {number} port - selected port number.
    */
   async start(port) {
     const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
@@ -98,7 +98,12 @@ module.exports = class EngineService extends EventEmitter {
     this._process = execFile(
       join(this.exeDir, 'FastExecuteScript.exe'),
       [`--remote-control-port=${port}`, '--remote-control'],
-      { cwd: this.exeDir }
+      { cwd: this.exeDir },
+      (error) => {
+        if (error && error.code) {
+          throw new Error(`Unable to start engine process (code: ${error.code})\n${INVALID_ENGINE_ERROR}`);
+        }
+      },
     );
 
     this._lock();
