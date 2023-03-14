@@ -1,5 +1,6 @@
 const { execFile } = require('child_process');
 const { join, basename } = require('path');
+const { createHash } = require('crypto');
 const lock = require('proper-lockfile');
 const EventEmitter = require('events');
 const extract = require('extract-zip');
@@ -30,6 +31,13 @@ module.exports = class EngineService extends EventEmitter {
    */
   async start(port) {
     const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
+
+    if (this.metadata && fs.existsSync(zipFile)) {
+      const hash = createHash('sha1').update(fs.readFileSync(zipFile));
+      if (this.metadata.checksum !== hash.digest('hex')) {
+        fs.rmSync(this.zipDir, { recursive: true });
+      }
+    }
 
     if (!fs.existsSync(this.zipDir)) {
       this.emit('beforeDownload');
