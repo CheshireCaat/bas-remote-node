@@ -4,9 +4,9 @@ const { createHash } = require('crypto');
 const lock = require('proper-lockfile');
 const EventEmitter = require('events');
 const extract = require('extract-zip');
-const rimraf = require('rimraf');
+const { rimraf } = require('rimraf');
 const fs = require('fs');
-const { request, download } = require('../utils');
+const { request, download } = require('./utils');
 const { INVALID_ENGINE_ERROR } = require('./constants');
 
 module.exports = class EngineService extends EventEmitter {
@@ -105,7 +105,7 @@ module.exports = class EngineService extends EventEmitter {
   _runEngineProcess(port) {
     this._process = execFile(
       join(this.exeDir, 'FastExecuteScript.exe'),
-      [`--remote-control-port=${port}`, '--remote-control'],
+      [`--remote-control-port=${port}`, '--remote-control', ...this.options.args],
       { cwd: this.exeDir },
       (error) => {
         if (error && error.code) {

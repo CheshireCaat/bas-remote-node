@@ -16,9 +16,10 @@ module.exports = class BasRemoteClient {
    * @param {String} options.scriptName - name of the selected private script.
    * @param {String} options.password - password from a user account with access to the script.
    * @param {String} options.login - login from a user account with access to the script.
+   * @param {String[]} options.args - additional arguments to be passed to the script.
    */
-  constructor({ workingDir = path.join(cwd(), 'data'), scriptName = '', password = '', login = '' } = {}) {
-    this.options = { workingDir, scriptName, password, login };
+  constructor({ workingDir = path.join(cwd(), 'data'), scriptName = '', password = '', login = '', args = [] } = {}) {
+    this.options = { workingDir, scriptName, password, login, args };
 
     throwIf(!this.options.workingDir,
       "Please define 'options.workingDir' setting"
