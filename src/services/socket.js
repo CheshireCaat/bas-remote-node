@@ -97,8 +97,9 @@ module.exports = class SocketService extends EventEmitter {
    * [description]
    * @returns {Promise}
    */
-  close() {
+  async close() {
+    if (!this._ws) return;
     this._ws.removeAllListeners();
-    return this._ws.close();
+    await this._ws.close();
   }
 };

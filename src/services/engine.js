@@ -149,7 +149,9 @@ module.exports = class EngineService extends EventEmitter {
   close() {
     return lock.unlock(this._getLockPath())
       .finally(() => {
-        this._process.kill();
+        if (this._process) {
+          this._process.kill();
+        }
       });
   }
 };
