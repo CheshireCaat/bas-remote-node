@@ -6,12 +6,8 @@ const inject = (promise, client, threadId) => ({
   finally: (...args) => inject(promise.finally(...args), client, threadId),
 });
 
-const throwIf = (condition, message) => {
-  if (condition) throw new Error(message);
-};
-
 const once = (emitter, event, cb) => emitter.once(event, cb).off.bind(emitter, event, cb);
 
 const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
 
-module.exports = { throwIf, inject, random, once };
+module.exports = { inject, random, once };

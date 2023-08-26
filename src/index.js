@@ -1,10 +1,11 @@
+/* eslint-disable curly */
 const path = require('path');
 const { cwd } = require('process');
 
-const { once, inject, random, throwIf } = require('./utils');
+const BasThread = require('./thread');
 const SocketService = require('./services/socket');
 const EngineService = require('./services/engine');
-const BasThread = require('./thread');
+const { once, inject, random } = require('./utils');
 
 module.exports = class BasRemoteClient {
   /**
@@ -19,19 +20,19 @@ module.exports = class BasRemoteClient {
    * @param {String[]} options.args - additional arguments to be passed to the script.
    */
   constructor({ workingDir = path.join(cwd(), 'data'), scriptName = '', password = '', login = '', args = [] } = {}) {
-    this.options = { workingDir, scriptName, password, login, args };
+    this.options = { scriptName, password, login, args };
 
-    throwIf(!this.options.workingDir,
+    if (!workingDir) throw new Error(
       "Please define 'options.workingDir' setting"
     );
 
-    throwIf(!this.options.scriptName,
+    if (!scriptName) throw new Error(
       "Please define 'options.scriptName' setting"
     );
 
-    this.options.workingDir = path.resolve(this.options.workingDir);
     this._socket = new SocketService(this.options);
     this._engine = new EngineService(this.options);
+    this.setWorkingFolder(workingDir);
     this._waitResolve = () => {};
     this._waitReject = () => {};
     this._isStarted = false;
@@ -78,7 +79,7 @@ module.exports = class BasRemoteClient {
    * Event listeners related to sending and receiving messages
    * accept a single argument `{ async, type, data, id }`.
    * @example
-   * client.once('messageReceived', message => {
+   * client.once('messageReceived', (message) => {
    *   console.log(`Message received: ${message.type}`));
    * });
    */
@@ -97,7 +98,7 @@ module.exports = class BasRemoteClient {
    * Event listeners related to sending and receiving messages
    * accept a single argument `{ async, type, data, id }`.
    * @example
-   * client.on('messageReceived', message => {
+   * client.on('messageReceived', (message) => {
    *   console.log(`Message received: ${message.type}`));
    * });
    */
@@ -116,7 +117,7 @@ module.exports = class BasRemoteClient {
    * Event listeners related to sending and receiving messages
    * accept a single argument `{ async, type, data, id }`.
    * @example
-   * const callback = message => {
+   * const callback = (message) => {
    *   console.log(message.type);
    * });
    *
@@ -157,6 +158,14 @@ module.exports = class BasRemoteClient {
     });
 
     this._isStarted = true;
+  }
+
+  /**
+   * Change the client and engine working folder.
+   * @param {String} folder - location of the selected working folder.
+   */
+  setWorkingFolder(folder = path.join(cwd(), 'data')) {
+    this._engine.setWorkingFolder(path.resolve(folder));
   }
 
   /**
@@ -239,7 +248,7 @@ module.exports = class BasRemoteClient {
    * @param {Boolean} isAsync - is message async.
    */
   send(type, data, isAsync = false) {
-    throwIf(!this._isStarted,
+    if (!this._isStarted) throw new Error(
       'Please start the client before calling this method'
     );
     return this._send(type, data, isAsync);

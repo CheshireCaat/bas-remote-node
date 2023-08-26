@@ -19,9 +19,6 @@ module.exports = class EngineService extends EventEmitter {
   constructor(options) {
     super();
     this.options = options;
-
-    this._scriptDir = join(options.workingDir, 'run', options.scriptName);
-    this._engineDir = join(options.workingDir, 'engine');
   }
 
   /**
@@ -102,6 +99,11 @@ module.exports = class EngineService extends EventEmitter {
     return extract(zipPath, { dir: this.exeDir });
   }
 
+  setWorkingFolder(folder) {
+    this._scriptDir = join(folder, 'run', this.options.scriptName);
+    this._engineDir = join(folder, 'engine');
+  }
+
   _runEngineProcess(port) {
     this._process = execFile(
       join(this.exeDir, 'FastExecuteScript.exe'),
@@ -146,12 +148,11 @@ module.exports = class EngineService extends EventEmitter {
    * [description]
    * @returns {Promise}
    */
-  close() {
-    return lock.unlock(this._getLockPath())
+  async close() {
+    if (!this._process) return;
+    await lock.unlock(this._getLockPath())
       .finally(() => {
-        if (this._process) {
-          this._process.kill();
-        }
+        this._process.kill();
       });
   }
 };

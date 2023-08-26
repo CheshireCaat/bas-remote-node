@@ -1,6 +1,6 @@
 const WebSocketAsPromised = require('websocket-as-promised');
 const WebSocket = require('websocket').w3cwebsocket;
-const EventEmitter = require('events');
+const { EventEmitter } = require('events');
 const { INVALID_ENGINE_ERROR } = require('./constants');
 
 const SEPARATOR = '---Message--End---';
@@ -14,9 +14,7 @@ module.exports = class SocketService extends EventEmitter {
    */
   constructor(options) {
     super();
-
     this.options = options;
-    this._buffer = '';
   }
 
   /**
