@@ -1,3 +1,4 @@
+const { pipeline } = require('stream/promises');
 const { execFile } = require('child_process');
 const { join, basename } = require('path');
 const { createHash } = require('crypto');
@@ -30,8 +31,7 @@ module.exports = class EngineService extends EventEmitter {
     const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
 
     if (this.metadata && fs.existsSync(zipFile)) {
-      const hash = createHash('sha1').update(fs.readFileSync(zipFile));
-      if (this.metadata.checksum !== hash.digest('hex')) {
+      if (this.metadata.checksum !== await checksum(zipFile)) {
         fs.rmSync(this.zipDir, { recursive: true });
       }
     }
@@ -155,6 +155,13 @@ module.exports = class EngineService extends EventEmitter {
         this._process.kill();
       });
   }
+};
+
+const checksum = async (file) => {
+  const input = fs.createReadStream(file);
+  const hash = createHash('sha1');
+  await pipeline(input, hash);
+  return hash.digest('hex');
 };
 
 const supported = (actual) => {
