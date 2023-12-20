@@ -2,7 +2,7 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-exports.request = (url) => new Promise((resolve) => {
+exports.request = (url) => new Promise((resolve, reject) => {
   let str = '';
 
   get(url, (response) => {
@@ -11,7 +11,12 @@ exports.request = (url) => new Promise((resolve) => {
     });
 
     response.on('end', () => {
-      resolve(JSON.parse(str));
+      try { // if string contains bad content
+        resolve(JSON.parse(str));
+      } catch (e) {
+        reject(e)
+      }
+
     });
   });
 });
