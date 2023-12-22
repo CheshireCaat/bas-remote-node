@@ -16,12 +16,12 @@ exports.request = (url) => new Promise((resolve, reject) => {
       } catch (e) {
         reject(e)
       }
-
     });
-  });
+
+  }).on('error', e => reject(e));
 });
 
-exports.download = (url, path) => new Promise((resolve) => {
+exports.download = (url, path) => new Promise((resolve, reject) => {
   const file = fs.createWriteStream(path);
 
   get(url, (response) => {
@@ -33,7 +33,7 @@ exports.download = (url, path) => new Promise((resolve) => {
       file.end();
       resolve();
     });
-  });
+  }).on('error', e => reject(e));
 });
 
 const get = (url, ...args) => (url.includes('http:') ? http : https).get(url, ...args);
