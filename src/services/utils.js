@@ -2,7 +2,7 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-exports.request = (url) => new Promise((resolve) => {
+exports.request = (url) => new Promise((resolve, reject) => {
   let str = '';
 
   get(url, (response) => {
@@ -11,12 +11,17 @@ exports.request = (url) => new Promise((resolve) => {
     });
 
     response.on('end', () => {
-      resolve(JSON.parse(str));
+      try { // if string contains bad content
+        resolve(JSON.parse(str));
+      } catch (e) {
+        reject(e)
+      }
     });
-  });
+
+  }).on('error', e => reject(e));
 });
 
-exports.download = (url, path) => new Promise((resolve) => {
+exports.download = (url, path) => new Promise((resolve, reject) => {
   const file = fs.createWriteStream(path);
 
   get(url, (response) => {
@@ -28,7 +33,7 @@ exports.download = (url, path) => new Promise((resolve) => {
       file.end();
       resolve();
     });
-  });
+  }).on('error', e => reject(e));
 });
 
 const get = (url, ...args) => (url.includes('http:') ? http : https).get(url, ...args);
