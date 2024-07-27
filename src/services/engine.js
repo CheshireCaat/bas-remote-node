@@ -2,7 +2,6 @@ const { pipeline } = require('stream/promises');
 const { execFile } = require('child_process');
 const { join, basename } = require('path');
 const { createHash } = require('crypto');
-const lock = require('proper-lockfile');
 const EventEmitter = require('events');
 const extract = require('extract-zip');
 const { rimraf } = require('rimraf');
@@ -116,15 +115,16 @@ module.exports = class EngineService extends EventEmitter {
       },
     );
 
-    this._lock();
+    this._createLockFile();
   }
 
   _clearRunDirectory() {
+    if (!fs.existsSync(this._scriptDir)) return;
     fs.readdirSync(this._scriptDir, { withFileTypes: true }).forEach((dirent) => {
       if (dirent.isDirectory()) {
         const path = join(this._scriptDir, dirent.name);
 
-        if (!lock.checkSync(join(path, '.lock'))) {
+        if (!this._isLocked(path)) {
           rimraf.sync(path);
         }
       }
@@ -135,12 +135,20 @@ module.exports = class EngineService extends EventEmitter {
     return join(this.exeDir, '.lock');
   }
 
-  _lock() {
+  _createLockFile() {
     try {
       fs.writeFileSync(this._getLockPath(), '');
-      lock.lockSync(this._getLockPath());
     } catch (error) {
       // ignore
+    }
+  }
+
+  _isLocked(path) {
+    try {
+      fs.accessSync(join(path, '.lock'));
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
@@ -150,10 +158,13 @@ module.exports = class EngineService extends EventEmitter {
    */
   async close() {
     if (!this._process) return;
-    await lock.unlock(this._getLockPath())
-      .finally(() => {
-        this._process.kill();
-      });
+    try {
+      fs.unlinkSync(this._getLockPath());
+    } catch (error) {
+      // ignore
+    } finally {
+      this._process.kill();
+    }
   }
 };
 
