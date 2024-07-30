@@ -31,7 +31,7 @@ module.exports = class EngineService extends EventEmitter {
     const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
 
     if (this.metadata && fs.existsSync(zipFile)) {
-      if (this.metadata.checksum !== await checksum(zipFile)) {
+      if (this.metadata.checksum !== (await checksum(zipFile))) {
         fs.rmSync(this.zipDir, { recursive: true });
       }
     }
@@ -113,13 +113,14 @@ module.exports = class EngineService extends EventEmitter {
         if (error && error.code && error.code > 1) {
           throw new Error(`Unable to start engine process (code: ${error.code})\n${INVALID_ENGINE_ERROR}`);
         }
-      },
+      }
     );
 
     this._lock();
   }
 
   _clearRunDirectory() {
+    if (!fs.existsSync(this._scriptDir)) return;
     fs.readdirSync(this._scriptDir, { withFileTypes: true }).forEach((dirent) => {
       if (dirent.isDirectory()) {
         const path = join(this._scriptDir, dirent.name);
@@ -150,10 +151,13 @@ module.exports = class EngineService extends EventEmitter {
    */
   async close() {
     if (!this._process) return;
-    await lock.unlock(this._getLockPath())
-      .finally(() => {
-        this._process.kill();
-      });
+    try {
+      await lock.unlock(this._getLockPath());
+    } catch {
+      // suppress lock error
+    } finally {
+      this._process.kill();
+    }
   }
 };
 
