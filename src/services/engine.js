@@ -56,28 +56,33 @@ module.exports = class EngineService extends EventEmitter {
    * @returns {Promise}
    */
   async initialize() {
-    await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`)
-      .then((data) => {
-        if (!data.success) {
-          throw new Error('Script with selected name not exist');
-        }
+    try {
+      await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`)
+        .then((data) => {
+          if (!data.success) {
+            throw new Error('Script with selected name not exist');
+          }
 
-        if (!supported(data.engversion)) {
-          throw new Error('Script engine not supported (Required 22.4.2 or newer)');
-        }
+          if (!supported(data.engversion)) {
+            throw new Error('Script engine not supported (Required 22.4.2 or newer)');
+          }
 
-        return data;
-      })
-      .then((data) => {
-        this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
-        this.zipDir = join(this._engineDir, data.engversion);
-      });
+          return data;
+        })
+        .then((data) => {
+          this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
+          this.zipDir = join(this._engineDir, data.engversion);
+        });
 
-    this.metadata = await request(
-      `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
-        this.zipDir
-      )}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
-    ).then((result) => ({ url: result.Url, chunks: result.Chunks, checksum: result.Checksum }));
+        this.metadata = await request(
+          `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
+            this.zipDir
+          )}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
+        ).then((result) => ({ url: result.Url, chunks: result.Chunks, checksum: result.Checksum }));
+    } catch (error) {
+      console.error(error);
+      return this.initialize();
+    }
   }
 
   /**

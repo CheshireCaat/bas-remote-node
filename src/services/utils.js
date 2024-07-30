@@ -2,33 +2,38 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
-exports.request = (url) => new Promise((resolve) => {
-  let str = '';
+exports.request = (url) => new Promise((resolve, reject) => {
+    let str = '';
 
-  get(url, (response) => {
-    response.on('data', (chunk) => {
-      str += chunk;
-    });
+    get(url, (response) => {
+      response.on('data', (chunk) => {
+        str += chunk;
+      });
 
-    response.on('end', () => {
-      resolve(JSON.parse(str));
+      response.on('end', () => {
+        try {
+          const json = JSON.parse(str);
+          resolve(json);
+        } catch (error) {
+          reject(error);
+        }
+      });
     });
   });
-});
 
 exports.download = (url, path) => new Promise((resolve) => {
-  const file = fs.createWriteStream(path);
+    const file = fs.createWriteStream(path);
 
-  get(url, (response) => {
-    response.on('data', (chunk) => {
-      file.write(chunk);
-    });
+    get(url, (response) => {
+      response.on('data', (chunk) => {
+        file.write(chunk);
+      });
 
-    response.on('end', () => {
-      file.end();
-      resolve();
+      response.on('end', () => {
+        file.end();
+        resolve();
+      });
     });
   });
-});
 
 const get = (url, ...args) => (url.includes('http:') ? http : https).get(url, ...args);
