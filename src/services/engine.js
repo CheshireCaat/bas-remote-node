@@ -8,7 +8,7 @@ const extract = require('extract-zip');
 const { rimraf } = require('rimraf');
 const fs = require('fs');
 const { request, download } = require('./utils');
-const { INVALID_ENGINE_ERROR } = require('./constants');
+const { InvalidEngineError } = require('./errors');
 
 module.exports = class EngineService extends EventEmitter {
   /**
@@ -111,7 +111,7 @@ module.exports = class EngineService extends EventEmitter {
       { cwd: this.exeDir },
       (error) => {
         if (error && error.code && error.code > 1) {
-          throw new Error(`Unable to start engine process (code: ${error.code})\n${INVALID_ENGINE_ERROR}`);
+          throw new InvalidEngineError(`Unable to start engine process (code: ${error.code})`);
         }
       }
     );

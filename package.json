@@ -1,32 +1,19 @@
 {
     "name": "bas-remote-node",
-    "version": "1.5.1",
     "description": "NodeJS library, which allows you to automate Google Chrome browser.",
-    "author": "CheshireCaat",
+    "homepage": "https://github.com/CheshireCaat/bas-remote-node#readme",
     "repository": "CheshireCaat/bas-remote-node",
+    "author": "CheshireCaat",
+    "version": "1.5.2",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/CheshireCaat/bas-remote-node/issues",
         "email": "cheshirecat902@gmail.com"
     },
-    "homepage": "https://github.com/CheshireCaat/bas-remote-node#readme",
-    "license": "MIT",
-    "devDependencies": {
-        "chai": "4.3.10",
-        "eslint": "8.51.0",
-        "eslint-config-airbnb-base": "15.0.0",
-        "eslint-plugin-chai-friendly": "0.7.2",
-        "eslint-plugin-import": "2.28.1",
-        "eslint-plugin-node": "11.1.0",
-        "eslint-plugin-promise": "6.1.1",
-        "mocha": "10.2.0"
-    },
-    "dependencies": {
-        "es5-ext": "0.10.53",
-        "extract-zip": "2.0.1",
-        "proper-lockfile": "4.1.2",
-        "rimraf": "5.0.5",
-        "websocket": "1.0.34",
-        "websocket-as-promised": "2.0.1"
+    "type": "commonjs",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "mocha"
     },
     "keywords": [
         "visual-programming-language",
@@ -50,15 +37,8 @@
         "cef",
         "bot"
     ],
-    "directories": {
-        "example": "examples",
-        "test": "test"
-    },
-    "scripts": {
-        "test": "mocha --exit --inline-diffs --timeout 1000000"
-    },
     "engines": {
-        "node": ">= 16"
+        "node": ">= 18"
     },
     "files": [
         "src"
@@ -66,5 +46,19 @@
     "os": [
         "win32"
     ],
-    "main": "src/index.js"
+    "dependencies": {
+        "dedent": "1.5.3",
+        "es5-ext": "0.10.53",
+        "extract-zip": "2.0.1",
+        "proper-lockfile": "4.1.2",
+        "rimraf": "5.0.9",
+        "websocket": "1.0.35",
+        "websocket-as-promised": "2.1.0"
+    },
+    "devDependencies": {
+        "@cheshire-caat/prettier-config": "1.0.0",
+        "chai": "4.2.0",
+        "mocha": "10.7.0"
+    },
+    "prettier": "@cheshire-caat/prettier-config"
 }

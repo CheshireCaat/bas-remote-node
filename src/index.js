@@ -6,6 +6,7 @@ const BasThread = require('./thread');
 const SocketService = require('./services/socket');
 const EngineService = require('./services/engine');
 const { once, inject, random } = require('./utils');
+const DEFAULT_WORKING_DIR = path.join(cwd(), 'data');
 
 module.exports = class BasRemoteClient {
   /**
@@ -19,7 +20,7 @@ module.exports = class BasRemoteClient {
    * @param {String} options.login - login from a user account with access to the script.
    * @param {String[]} options.args - additional arguments to be passed to the script.
    */
-  constructor({ workingDir = path.join(cwd(), 'data'), scriptName = '', password = '', login = '', args = [] } = {}) {
+  constructor({ workingDir = DEFAULT_WORKING_DIR, scriptName = '', password = '', login = '', args = [] } = {}) {
     this.options = { scriptName, password, login, args };
 
     if (!workingDir) throw new Error(
@@ -162,10 +163,10 @@ module.exports = class BasRemoteClient {
 
   /**
    * Change the client and engine working folder.
-   * @param {String} folder - location of the selected working folder.
+   * @param {String} workingDir - location of the selected working folder.
    */
-  setWorkingFolder(folder = path.join(cwd(), 'data')) {
-    this._engine.setWorkingFolder(path.resolve(folder));
+  setWorkingFolder(workingDir = DEFAULT_WORKING_DIR) {
+    this._engine.setWorkingFolder(path.resolve(workingDir));
   }
 
   /**
