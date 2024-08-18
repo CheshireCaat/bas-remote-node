@@ -1,4 +1,3 @@
-/* eslint-disable curly */
 const path = require('path');
 const { cwd } = require('process');
 
@@ -21,8 +20,6 @@ module.exports = class BasRemoteClient {
    * @param {String[]} options.args - additional arguments to be passed to the script.
    */
   constructor({ workingDir = DEFAULT_WORKING_DIR, scriptName = '', password = '', login = '', args = [] } = {}) {
-    this.options = { scriptName, password, login, args };
-
     if (!workingDir) throw new Error(
       "Please define 'options.workingDir' setting"
     );
@@ -31,6 +28,7 @@ module.exports = class BasRemoteClient {
       "Please define 'options.scriptName' setting"
     );
 
+    this.options = { scriptName, password, login, args };
     this._socket = new SocketService(this.options);
     this._engine = new EngineService(this.options);
     this.setWorkingFolder(workingDir);

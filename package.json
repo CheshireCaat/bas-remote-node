@@ -4,7 +4,7 @@
     "homepage": "https://github.com/CheshireCaat/bas-remote-node#readme",
     "repository": "CheshireCaat/bas-remote-node",
     "author": "CheshireCaat",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/CheshireCaat/bas-remote-node/issues",
@@ -48,17 +48,16 @@
     ],
     "dependencies": {
         "dedent": "1.5.3",
-        "es5-ext": "0.10.53",
         "extract-zip": "2.0.1",
         "proper-lockfile": "4.1.2",
-        "rimraf": "5.0.9",
-        "websocket": "1.0.35",
-        "websocket-as-promised": "2.1.0"
+        "rimraf": "6.0.1",
+        "websocket-as-promised": "2.1.0",
+        "ws": "^8.18.0"
     },
     "devDependencies": {
         "@cheshire-caat/prettier-config": "1.0.0",
-        "chai": "4.2.0",
-        "mocha": "10.7.0"
+        "chai": "4.5.0",
+        "mocha": "10.7.3"
     },
     "prettier": "@cheshire-caat/prettier-config"
 }

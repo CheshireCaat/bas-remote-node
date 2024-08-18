@@ -1,5 +1,5 @@
 const WebSocketAsPromised = require('websocket-as-promised');
-const WebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('ws');
 const { EventEmitter } = require('events');
 const { InvalidEngineError } = require('./errors');
 
@@ -24,10 +24,8 @@ module.exports = class SocketService extends EventEmitter {
    */
   async start(port) {
     this._ws = new WebSocketAsPromised(`ws://127.0.0.1:${port}`, {
-      createWebSocket: (url) => new WebSocket(url, null, null, null, null, {
-        maxReceivedMessageSize: Infinity,
-        maxReceivedFrameSize: Infinity,
-      }),
+      createWebSocket: (url) => new WebSocket(url),
+      extractMessageData: (event) => event,
     });
     this._buffer = '';
 
@@ -50,7 +48,7 @@ module.exports = class SocketService extends EventEmitter {
     const promise = new Promise((resolve, reject) => {
       this._ws.onClose.addListener((error) => {
         if (attempts === 60) {
-          reject(new InvalidEngineError(`Cannot connect to the WebSocket server (reason: ${error.reason})`))
+          reject(new InvalidEngineError(`Cannot connect to the WebSocket server (reason: ${error.reason})`));
         }
 
         this.emit('close');
