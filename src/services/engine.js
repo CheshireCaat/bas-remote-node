@@ -57,22 +57,18 @@ module.exports = class EngineService extends EventEmitter {
    * @returns {Promise}
    */
   async initialize() {
-    await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`)
-      .then((data) => {
-        if (!data.success) {
-          throw new Error('Script with selected name not exist');
-        }
+    const data = await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`);
 
-        if (!supported(data.engversion)) {
-          throw new Error('Script engine not supported (Required 22.4.2 or newer)');
-        }
+    if (!data.success) {
+      throw new Error('Script with selected name not exist');
+    }
 
-        return data;
-      })
-      .then((data) => {
-        this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
-        this.zipDir = join(this._engineDir, data.engversion);
-      });
+    if (!supported(data.engversion)) {
+      throw new Error('Script engine not supported (Required 22.4.2 or newer)');
+    }
+
+    this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
+    this.zipDir = join(this._engineDir, data.engversion);
 
     this.metadata = await request(
       `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
