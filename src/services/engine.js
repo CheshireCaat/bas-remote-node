@@ -1,3 +1,4 @@
+const Cache = require('file-system-cache').default;
 const { pipeline } = require('stream/promises');
 const { execFile } = require('child_process');
 const { join, basename } = require('path');
@@ -6,9 +7,15 @@ const lock = require('proper-lockfile');
 const EventEmitter = require('events');
 const extract = require('extract-zip');
 const { rimraf } = require('rimraf');
+const os = require('os');
 const fs = require('fs');
 const { request, download } = require('./utils');
 const { InvalidEngineError } = require('./errors');
+
+const cache = Cache({
+  ttl: 60 * 10, // 10 minutes
+  basePath: join(os.tmpdir(), 'BasRemoteCache'),
+});
 
 module.exports = class EngineService extends EventEmitter {
   /**
@@ -57,7 +64,7 @@ module.exports = class EngineService extends EventEmitter {
    * @returns {Promise}
    */
   async initialize() {
-    const data = await request(`${SCRIPTS_URL}/${this.options.scriptName}/properties`);
+    const data = await fetch(`${SCRIPTS_URL}/${this.options.scriptName}/properties`);
 
     if (!data.success) {
       throw new Error('Script with selected name not exist');
@@ -70,7 +77,7 @@ module.exports = class EngineService extends EventEmitter {
     this.exeDir = join(this._scriptDir, data.hash.slice(0, 5));
     this.zipDir = join(this._engineDir, data.engversion);
 
-    this.metadata = await request(
+    this.metadata = await fetch(
       `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
         this.zipDir
       )}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
@@ -162,6 +169,18 @@ const checksum = async (file) => {
   const hash = createHash('sha1');
   await pipeline(input, hash);
   return hash.digest('hex');
+};
+
+const fetch = async (url) => {
+  try {
+    const cached = await cache.get(url);
+    return JSON.parse(cached);
+  } catch {
+    // Ignore if not cached and proceed to fetch
+  }
+  const response = await request(url);
+  await cache.set(url, JSON.stringify(response));
+  return response;
 };
 
 const supported = (actual) => {
