@@ -46,9 +46,9 @@ module.exports = class SocketService extends EventEmitter {
   async _connect() {
     let attempts = 0;
     const promise = new Promise((resolve, reject) => {
-      this._ws.onClose.addListener((error) => {
+      this._ws.onClose.addListener((reason) => {
         if (attempts === 60) {
-          reject(new InvalidEngineError(`Cannot connect to the WebSocket server (reason: ${error.reason})`));
+          reject(new InvalidEngineError(`Cannot connect to the WebSocket server (reason: ${reason})`));
         }
 
         this.emit('close');
