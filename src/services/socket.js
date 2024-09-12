@@ -3,6 +3,8 @@ const WebSocket = require('ws');
 const { EventEmitter } = require('events');
 const { InvalidEngineError } = require('./errors');
 
+const MAX_RETRIES = 60;
+const RETRY_INTERVAL = 1000;
 const SEPARATOR = '---Message--End---';
 
 module.exports = class SocketService extends EventEmitter {
@@ -44,19 +46,19 @@ module.exports = class SocketService extends EventEmitter {
   }
 
   async _connect() {
-    let attempts = 0;
+    let retries = 0;
     const promise = new Promise((resolve, reject) => {
-      this._ws.onClose.addListener((reason) => {
-        if (attempts === 60) {
-          reject(new InvalidEngineError(`Cannot connect to the WebSocket server (reason: ${reason})`));
+      this._ws.onClose.addListener(() => {
+        if (retries === MAX_RETRIES) {
+          reject(new InvalidEngineError(`Cannot connect to the WebSocket server after ${MAX_RETRIES} attempts`));
         }
 
         this.emit('close');
 
         setTimeout(() => {
-          attempts += 1;
+          retries += 1;
           this._open();
-        }, 1000);
+        }, RETRY_INTERVAL);
       });
 
       this._ws.onOpen.addListener(() => {

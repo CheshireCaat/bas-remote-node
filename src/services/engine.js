@@ -1,7 +1,7 @@
 const Cache = require('file-system-cache').default;
 const { pipeline } = require('stream/promises');
 const { execFile } = require('child_process');
-const { join, basename } = require('path');
+const { join } = require('path');
 const { createHash } = require('crypto');
 const lock = require('proper-lockfile');
 const EventEmitter = require('events');
@@ -78,9 +78,7 @@ module.exports = class EngineService extends EventEmitter {
     this.zipDir = join(this._engineDir, data.engversion);
 
     this.metadata = await fetch(
-      `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${basename(
-        this.zipDir
-      )}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
+      `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${data.engversion}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
     ).then((result) => ({ url: result.Url, chunks: result.Chunks, checksum: result.Checksum }));
   }
 
@@ -104,7 +102,7 @@ module.exports = class EngineService extends EventEmitter {
 
   setWorkingFolder(folder) {
     this._scriptDir = join(folder, 'run', this.options.scriptName);
-    this._engineDir = join(folder, 'engine');
+    this._engineDir = this.options.enginesDir || join(folder, 'engine');
   }
 
   _runEngineProcess(port) {
