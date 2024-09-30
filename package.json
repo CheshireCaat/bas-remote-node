@@ -52,7 +52,7 @@
         "file-system-cache": "3.0.0-alpha.7",
         "proper-lockfile": "4.1.2",
         "rimraf": "6.0.1",
-        "websocket-as-promised": "2.1.0",
+        "websocket-as-promised": "3.0.0",
         "ws": "^8.18.0"
     },
     "devDependencies": {
