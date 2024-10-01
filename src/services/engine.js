@@ -17,6 +17,14 @@ const cache = Cache({
   basePath: join(os.tmpdir(), 'BasRemoteCache'),
 });
 
+const ENGINE = 'FastExecuteScriptProtected';
+
+const DISTR_URL = 'https://bablosoft.com/distr';
+
+const SCRIPTS_URL = 'https://bablosoft.com/scripts';
+
+const ARCH = process.arch.includes('32') ? '32' : '64';
+
 module.exports = class EngineService extends EventEmitter {
   /**
    * Create an instance of the `EngineService` class.
@@ -35,7 +43,7 @@ module.exports = class EngineService extends EventEmitter {
    * @param {number} port - selected port number.
    */
   async start(port) {
-    const zipFile = join(this.zipDir, `FastExecuteScriptProtected.x${ARCH}.zip`);
+    const zipFile = join(this.zipDir, `${ENGINE}.x${ARCH}.zip`);
 
     if (this.metadata && fs.existsSync(zipFile)) {
       if (this.metadata.checksum !== (await checksum(zipFile))) {
@@ -78,7 +86,7 @@ module.exports = class EngineService extends EventEmitter {
     this.zipDir = join(this._engineDir, data.engversion);
 
     this.metadata = await fetch(
-      `${DISTR_URL}/FastExecuteScriptProtected${ARCH}/${data.engversion}/FastExecuteScriptProtected.x${ARCH}.zip.meta.json`
+      `${DISTR_URL}/${ENGINE}${ARCH}/${data.engversion}/${ENGINE}.x${ARCH}.zip.meta.json`
     ).then((result) => ({ url: result.Url, chunks: result.Chunks, checksum: result.Checksum }));
   }
 
@@ -102,7 +110,7 @@ module.exports = class EngineService extends EventEmitter {
 
   setWorkingFolder(folder) {
     this._scriptDir = join(folder, 'run', this.options.scriptName);
-    this._engineDir = this.options.enginesDir || join(folder, 'engine');
+    this._engineDir = join(folder, 'engine');
   }
 
   _runEngineProcess(port) {
@@ -197,9 +205,3 @@ const supported = (actual) => {
 
   return patchA >= patchB;
 };
-
-const DISTR_URL = 'https://bablosoft.com/distr';
-
-const SCRIPTS_URL = 'https://bablosoft.com/scripts';
-
-const ARCH = process.arch.includes('32') ? '32' : '64';
