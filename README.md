@@ -1,7 +1,7 @@
 # bas-remote-node
 
 [![npm version](https://badge.fury.io/js/bas-remote-node.svg)](https://badge.fury.io/js/bas-remote-node)
-[![GitHub issues](https://img.shields.io/github/issues/CheshireCaat/bas-remote-node)](https://github.com/CheshireCaat/bas-remote-node/issues)
+[![GitHub issues](https://img.shields.io/github/issues/bablosoft/bas-remote-node)](https://github.com/bablosoft/bas-remote-node/issues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **bas-remote-node** - NodeJS library, which allows you to **automate Google Chrome browser**.
@@ -63,7 +63,7 @@ async function main() {
 main();
 ```
 
-Checkout [wiki](https://github.com/CheshireCaat/bas-remote-node/wiki) for more examples.
+Checkout [wiki](https://github.com/bablosoft/bas-remote-node/wiki) for more examples.
 
 # Running custom code
 

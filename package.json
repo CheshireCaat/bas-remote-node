@@ -1,14 +1,14 @@
 {
     "name": "bas-remote-node",
     "description": "NodeJS library, which allows you to automate Google Chrome browser.",
-    "homepage": "https://github.com/CheshireCaat/bas-remote-node#readme",
-    "repository": "CheshireCaat/bas-remote-node",
-    "author": "CheshireCaat",
-    "version": "1.5.6",
+    "homepage": "https://github.com/bablosoft/bas-remote-node#readme",
+    "repository": "bablosoft/bas-remote-node",
+    "author": "bablosoft",
+    "version": "1.5.7",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/CheshireCaat/bas-remote-node/issues",
-        "email": "cheshirecat902@gmail.com"
+        "url": "https://github.com/bablosoft/bas-remote-node/issues",
+        "email": "mail.to.twaego@gmail.com"
     },
     "type": "commonjs",
     "main": "src/index.js",
@@ -47,18 +47,18 @@
         "win32"
     ],
     "dependencies": {
-        "dedent": "1.5.3",
+        "dedent": "1.6.0",
         "extract-zip": "2.0.1",
         "file-system-cache": "3.0.0-alpha.7",
         "proper-lockfile": "4.1.2",
         "rimraf": "6.0.1",
-        "websocket-as-promised": "3.0.0",
-        "ws": "^8.18.0"
+        "websocket-as-promised": "3.0.1",
+        "ws": "^8.18.3"
     },
     "devDependencies": {
         "@cheshire-caat/prettier-config": "1.0.0",
-        "chai": "4.5.0",
-        "mocha": "10.7.3"
+        "chai": "5.2.1",
+        "mocha": "11.7.1"
     },
     "prettier": "@cheshire-caat/prettier-config"
 }
